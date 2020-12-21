@@ -1,6 +1,6 @@
 name: ToDoApiBuildAndDeploy
 variables:
-  azureConnection: 'dockerregistry'
+  azureConnection: 'AcrConnection'
   imageRepository: 'acrPoc4543423'
   dockerFilePath: '$(Build.SourcesDirectory)/TodoApi/Dockerfile'
   tag: 'latest'

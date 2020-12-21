@@ -31,3 +31,5 @@ stages:
         containerRegistry: $(azureConnection)
         tags: |
           $(tag)
+    - publish: '$(Build.SourcesDirectory)/Manifests'
+      artifact: manifests

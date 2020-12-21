@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Managed Cluster resource"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of the Managed Cluster resource"
+            }
+        },
+        "dnsPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Optional DNS prefix to use with hosted Kubernetes API server FQDN"
+            }
+        },
+        "agentCount": {
+            "type": "int",
+            "metadata": {
+                "description": "The number of nodes for the cluster"
+            }
+        },
+        "agentVMSize": {
+            "type": "string",
+            "metadata": {
+                "description": "The size of the Virtual Machine"
+            }
+        },
+        "osType": {
+            "type": "string",
+            "metadata": {
+                "description": "The type of operating system."
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ContainerService/managedClusters",
+            "apiVersion": "2020-03-01",
+            "name": "[parameters('clusterName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "dnsPrefix": "[parameters('dnsPrefix')]",
+                "agentPoolProfiles": [
+                    {
+                        "name": "agentpool",
+                        "count": "[parameters('agentCount')]",
+                        "vmSize": "[parameters('agentVMSize')]",
+                        "osType": "[parameters('osType')]",
+                        "storageProfile": "ManagedDisks"
+                    }
+                ]
+            },
+            "identity": {
+                "type": "SystemAssigned"
+            }
+        }
+    ],
+    "outputs": {
+    }
+}

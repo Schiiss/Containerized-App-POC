@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "acrName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name Container Registry"
+            }
+        },
+        "acrAdminUserEnabled": {
+            "type": "bool",
+            "metadata": {
+                "description": "Enable admin user that have push / pull permission to the registry"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location for all resources"
+            }
+        },
+        "acrSku": {
+            "type": "string",
+            "metadata": {
+                "description": "Tier of your Azure Container Registry"
+            },
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "Standard",
+                "Premium"
+            ]
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('acrName')]",
+            "type": "Microsoft.ContainerRegistry/registries",
+            "apiVersion": "2019-12-01-preview",
+            "location": "[parameters('location')]",
+            "comments": "Container registry for storing docker images",
+            "sku": {
+                "name": "[parameters('acrSku')]",
+                "tier": "[parameters('acrSku')]"
+            },
+            "properties": {
+                "adminUserEnabled": "[parameters('acrAdminUserEnabled')]"
+            }
+        }
+    ],
+    "outputs": {
+    }
+}

@@ -45,30 +45,27 @@ stages:
     displayName: Deploy
     pool:
       vmImage: 'windows-latest'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: manifests
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
-            inputs:
-              action: createSecret
-              secretName: $(imagePullSecret)
-              dockerRegistryEndpoint: $(acrConnection)
-              kubernetesServiceConnection: $(k8Connection)
-              namespace: 'default'
-          - task: KubernetesManifest@0
-            displayName: Deploy to Kubernetes cluster
-            inputs:
-              action: deploy
-              kubernetesServiceConnection: 'Kubernetes Cluster Connection'
-              namespace: 'default'
-              manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: |
-                acrpoc4543423.azurecr.io/todoapi:$(tag)
+    steps:
+    - download: current
+      artifact: manifests
+    - task: KubernetesManifest@0
+      displayName: Create imagePullSecret
+      inputs:
+        action: createSecret
+        secretName: $(imagePullSecret)
+        dockerRegistryEndpoint: $(acrConnection)
+        kubernetesServiceConnection: $(k8Connection)
+        namespace: 'default'
+    - task: KubernetesManifest@0
+      displayName: Deploy to Kubernetes cluster
+      inputs:
+        action: deploy
+        kubernetesServiceConnection: 'Kubernetes Cluster Connection'
+        namespace: 'default'
+        manifests: |
+          $(Pipeline.Workspace)/manifests/deployment.yml
+          $(Pipeline.Workspace)/manifests/service.yml
+        imagePullSecrets: |
+          $(imagePullSecret)
+        containers: |
+          acrpoc4543423.azurecr.io/todoapi:$(tag)

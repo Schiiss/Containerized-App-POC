@@ -1,8 +1,9 @@
 name: ToDoApiBuildAndDeploy
 variables:
-  azureConnection: 'Clyfar Superscription'
+  azureConnection: 'dockerregistry'
   imageRepository: 'acrPoc4543423'
   dockerFilePath: '$(Build.SourcesDirectory)/TodoApi/Dockerfile'
+  tag: 'latest'
 
 trigger:
 - main

@@ -1,0 +1,27 @@
+name: ToDoApiBuildAndDeploy
+variables:
+  azureConnection: 'Clyfar Superscription'
+  imageRepository: 'acrPoc4543423'
+  dockerFilePath: '$(Build.SourcesDirectory)/TodoApi/Dockerfile'
+
+trigger:
+- main
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:  
+  - job: Build
+    displayName: Build job
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerFilePath)
+        containerRegistry: $(azureConnection)
+        tags: |
+          $(tag)

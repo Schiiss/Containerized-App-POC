@@ -1,16 +1,21 @@
 name: ToDoApiBuildAndDeploy
 variables:
   azureConnection: 'AcrConnection'
-  imageRepository: 'acrPoc4543423'
+  imageRepository: 'todoapi'
   dockerFilePath: '$(Build.SourcesDirectory)/TodoApi/Dockerfile'
   tag: 'latest'
 
 trigger:
-- main
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - TodoApi/*
 
 stages:
 - stage: Build
-  displayName: Build and push stage
+  displayName: Build and push to ACR
   jobs:  
   - job: Build
     displayName: Build job
